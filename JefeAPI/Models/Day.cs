@@ -8,7 +8,7 @@ namespace JefeAPI.Models
     public class Day {
         public int id;
         public DateTime Date { get; set; }
-        //tallies array here
+        public List<Tally> Tallies { get; set; }
         public int TicketsSold { get; set; }
         public int Sales { get; set; }
     }

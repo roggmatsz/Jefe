@@ -39,7 +39,29 @@ namespace JefeAPI
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
+            var context = app.ApplicationServices.GetService<Models.ApiContext>();
+            //AddTestData();
+
             app.UseMvc();
+        }
+        
+        private static void AddTestData(Models.ApiContext context) {
+            var newTicket1 = new Models.Ticket {
+                id = 1,
+                GameID = 345,
+                Slot = 4,
+                Value = 20
+            };
+            context.Tickets.Add(newTicket1);
+            var newTally = new Models.Tally {
+                id = 2, 
+                DayID = 1,
+                TicketID = 1,
+                Start = 4,
+                End = 10,
+            };
+            context.Tallies.Add(newTally);
+            context.SaveChanges();
         }
     }
 }

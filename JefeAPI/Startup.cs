@@ -40,7 +40,7 @@ namespace JefeAPI
             loggerFactory.AddDebug();
 
             var context = app.ApplicationServices.GetService<Models.ApiContext>();
-            //AddTestData();
+            AddTestData();
 
             app.UseMvc();
         }

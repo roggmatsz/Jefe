@@ -11,12 +11,6 @@ namespace JefeAPI.Controllers
     [Route("api/[controller]")]
     public class ValuesController : Controller
     {
-        // GET api/values
-        //[HttpGet]
-        //public IEnumerable<string> Get()
-        //{
-        //    return new string[] { "value1", "value2" };
-        //}
         private readonly ApiContext _context;
 
         public ValuesController(ApiContext context) {
@@ -38,8 +32,15 @@ namespace JefeAPI.Controllers
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody]string value)
+        [Produces(typeof(Ticket))]
+        public IActionResult Post([FromBody]Ticket value)
         {
+            if(!ModelState.IsValid) {
+                return BadRequest(ModelState);
+            }
+            _context.Tickets.Add(value);
+            _context.SaveChanges();
+            return CreatedAtAction("GET", new { id = value.id }, value);
         }
 
         // PUT api/values/5

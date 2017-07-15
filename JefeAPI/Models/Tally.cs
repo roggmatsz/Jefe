@@ -11,7 +11,11 @@ namespace JefeAPI.Models
         public int TicketID { get; set; }
         public int Start { get; set; }
         public int End { get; set; }
-        public int Count { get; }
-        public int Sales { get; }
+        public int Count => Start + End;
+        public int Sales { get; set; }
+
+        static int computeSales(int value, int count) {
+            return value * count;
+        }
     }
 }

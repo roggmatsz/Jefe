@@ -31,6 +31,12 @@ namespace JefeAPI
             // Add framework services.
             services.AddMvc();
             services.AddDbContext<Models.ApiContext>(opt => opt.UseInMemoryDatabase());
+            services.AddSwaggerGen(c => {
+                c.SwaggerDoc("v1", new Swashbuckle.AspNetCore.Swagger.Info {
+                    Title = "JefeAPI",
+                    Version = "v1"
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -43,6 +49,10 @@ namespace JefeAPI
             AddTestData(context);
 
             app.UseMvc();
+            app.UseSwagger();
+            app.UseSwaggerUI(c => {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "JefeAPI V1");
+            });
         }
         
         private static void AddTestData(Models.ApiContext context) {

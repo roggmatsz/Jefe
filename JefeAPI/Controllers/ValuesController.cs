@@ -30,10 +30,12 @@ namespace JefeAPI.Controllers
         }
 
         // GET api/values/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet("{id:int}")]
+        public IActionResult GetById(int id)
         {
-            return "value";
+            var ticket = _context.Tickets.FirstOrDefault( x => x.id == id);
+            if(ticket != null) return Ok(ticket);
+            return BadRequest();
         }
 
         // POST api/values

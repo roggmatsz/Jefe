@@ -49,6 +49,10 @@ namespace JefeAPI
             AddTestData(context);
 
             app.UseMvc();
+            app.UseSwagger();
+            app.UseSwaggerUI(c => {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "JefeAPI");
+            });
         }
         
         private static void AddTestData(Models.ApiContext context) {

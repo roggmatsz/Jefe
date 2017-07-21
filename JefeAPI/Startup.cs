@@ -63,6 +63,13 @@ namespace JefeAPI
                 Value = 20
             };
             context.Tickets.Add(newTicket1);
+            newTicket1 = new Models.Ticket {
+                id = 2,
+                GameID = 234,
+                Slot = 5,
+                Value = 5
+            };
+            context.Tickets.Add(newTicket1);
             var newTally = new Models.Tally {
                 id = 2, 
                 DayID = 1,

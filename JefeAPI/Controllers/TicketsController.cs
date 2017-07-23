@@ -9,7 +9,7 @@ using JefeAPI.Models;
 namespace JefeAPI.Controllers
 {
     [Produces("application/json", Type = typeof(Ticket))]
-    [Route("api/Tickets")]
+    [Route("api/[controller]")]
     public class TicketsController : Controller {
         private readonly ApiContext _context;
 

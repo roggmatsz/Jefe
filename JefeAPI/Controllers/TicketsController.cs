@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -18,31 +19,23 @@ namespace JefeAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get() {
-            var tickets = await _context.Tickets.ToArrayAsync();
+        public async Task<IActionResult> Get(CancellationToken token) {
+            var tickets = await _context.Tickets.ToArrayAsync(token);
             return Ok(tickets);
         }
 
         [HttpGet("{id:int}")]
-        public async Task<IActionResult> GetById(int id) {
+        public async Task<IActionResult> GetById(int id, CancellationToken token) {
             var ticket = await _context.Tickets
-                .Where(t => t.id == id).SingleOrDefaultAsync();
+                .Where(t => t.id == id).SingleOrDefaultAsync(token);
             if (ticket != null) return Ok(ticket);
             return NotFound();
         }
 
-        [HttpGet("{slot:int}")]
-        public async Task<IActionResult> GetBySlot(int slot) {
+        [HttpGet("{gameId:range(100, 999)}")]
+        public async Task<IActionResult> GetByGameID(int gameId, CancellationToken token) {
             var ticket = await _context.Tickets
-                .Where(t => t.Slot == slot).SingleOrDefaultAsync();
-            if (ticket != null) return Ok(ticket);
-            return NotFound();
-        }
-
-        [HttpGet("{gameId:int}")]
-        public async Task<IActionResult> GetByGameID(int gameId) {
-            var ticket = await _context.Tickets
-                .Where(t => t.GameID == gameId).FirstOrDefaultAsync();
+                .Where(t => t.GameID == gameId).FirstOrDefaultAsync(token);
             if (ticket != null) return Ok(ticket);
             return NotFound();
         }

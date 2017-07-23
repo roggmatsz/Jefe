@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using JefeAPI.Models;
 namespace JefeAPI.Controllers
 {
-    [Produces("application/json")]
+    [Produces("application/json", Type = typeof(Ticket))]
     [Route("api/Tickets")]
     public class TicketsController : Controller {
         private readonly ApiContext _context;
@@ -25,23 +25,33 @@ namespace JefeAPI.Controllers
 
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetById(int id) {
-            var ticket = await _context.Tickets.FirstOrDefaultAsync(x => x.id == id);
+            var ticket = await _context.Tickets
+                .Where(t => t.id == id).SingleOrDefaultAsync();
             if (ticket != null) return Ok(ticket);
-            return BadRequest();
+            return NotFound();
         }
 
         [HttpGet("{slot:int}")]
         public async Task<IActionResult> GetBySlot(int slot) {
-            var ticket = await _context.Tickets.FirstOrDefaultAsync(x => x.Slot == slot);
+            var ticket = await _context.Tickets
+                .Where(t => t.Slot == slot).SingleOrDefaultAsync();
             if (ticket != null) return Ok(ticket);
-            return BadRequest();
+            return NotFound();
         }
 
         [HttpGet("{gameId:int}")]
         public async Task<IActionResult> GetByGameID(int gameId) {
-            var ticket = await _context.Tickets.FirstOrDefaultAsync(x => x.GameID == gameId);
+            var ticket = await _context.Tickets
+                .Where(t => t.GameID == gameId).FirstOrDefaultAsync();
             if (ticket != null) return Ok(ticket);
-            return BadRequest();
+            return NotFound();
+        }
+        [HttpPost]
+        public IActionResult Post([FromBody]Ticket newTicket) {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+            _context.Tickets.Add(newTicket);
+            _context.SaveChanges();
+            return Created("some URI here", newTicket);
         }
     }
 }

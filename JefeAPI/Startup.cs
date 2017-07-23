@@ -56,28 +56,18 @@ namespace JefeAPI
         }
         
         private static void AddTestData(Models.ApiContext context) {
-            var newTicket1 = new Models.Ticket {
-                id = 1,
-                GameID = 345,
-                Slot = 4,
-                Value = 20
-            };
-            context.Tickets.Add(newTicket1);
-            newTicket1 = new Models.Ticket {
-                id = 2,
-                GameID = 234,
-                Slot = 5,
+            context.Tickets.Add(new Entities.TicketEntity {
+                id = 0,
+                GameID = 527,
+                Slot = 10,
                 Value = 5
-            };
-            context.Tickets.Add(newTicket1);
-            var newTally = new Models.Tally {
-                id = 2, 
-                DayID = 1,
-                TicketID = 1,
-                Start = 4,
-                End = 10,
-            };
-            context.Tallies.Add(newTally);
+            });
+            context.Tickets.Add(new Entities.TicketEntity {
+                id = 0,
+                GameID = 234,
+                Slot = 21,
+                Value = 3
+            });
             context.SaveChanges();
         }
     }

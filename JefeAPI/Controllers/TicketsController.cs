@@ -49,9 +49,26 @@ namespace JefeAPI.Controllers
         [HttpPost]
         public IActionResult Post([FromBody]Ticket newTicket) {
             if (!ModelState.IsValid) return BadRequest(ModelState);
-            _context.Tickets.Add(newTicket);
+            _context.Tickets.Add(new Entities.TicketEntity {
+                id = 0,
+                GameID = newTicket.GameID,
+                Slot = newTicket.Slot,
+                Value = newTicket.Value
+            });
             _context.SaveChanges();
             return Created("some URI here", newTicket);
+        }
+        [HttpPut("{id}")]
+        public IActionResult Put(int id, [FromBody]Ticket item) {
+            if (item == null) return BadRequest();
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+            var ticket = _context.Tickets.Where(t => t.id == id).SingleOrDefault();
+            ticket.GameID = item.GameID;
+            ticket.Slot = item.Slot;
+            ticket.Value = item.Value;
+            _context.Tickets.Update(ticket);
+            _context.SaveChanges();
+            return new NoContentResult();
         }
     }
 }
